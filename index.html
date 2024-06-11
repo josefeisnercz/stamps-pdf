@@ -39,7 +39,7 @@
             .then(response => response.json())
             .then(data => {
                 pdfs = data;
-                renderDirectory('/');
+                renderDirectory('/pdfs/');
             })
             .catch(error => console.error('Error loading PDF list:', error));
 
@@ -47,10 +47,16 @@
             const gallery = document.getElementById('gallery');
             gallery.innerHTML = '';
 
-            const currentDir = pdfs.filter(pdf => pdf.startsWith(path) && pdf.replace(path, '').split('/').length > 1);
-            const directories = [...new Set(currentDir.map(pdf => pdf.replace(path, '').split('/')[0]))];
+            const currentDir = pdfs.filter(pdf => pdf.startsWith(path));
+            console.log('Current Directory:', currentDir);
 
-            if (path !== '/') {
+            const directories = [...new Set(currentDir.map(pdf => {
+                const relativePath = pdf.replace(path, '').split('/');
+                return relativePath.length > 1 ? relativePath[0] : null;
+            }).filter(dir => dir !== null))];
+            console.log('Directories:', directories);
+
+            if (path !== '/pdfs/') {
                 const parentPath = path.split('/').slice(0, -2).join('/') + '/';
                 gallery.innerHTML += `<button class="back-button" onclick="renderDirectory('${parentPath}')">Back</button>`;
             }

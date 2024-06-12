@@ -39,11 +39,11 @@
             .then(response => response.json())
             .then(data => {
                 pdfs = data;
-                renderDirectory('/pdfs/');
+                renderGallery('/pdfs/');
             })
             .catch(error => console.error('Error loading PDF list:', error));
 
-        function renderDirectory(path) {
+        function renderGallery(path) {
             const gallery = document.getElementById('gallery');
             gallery.innerHTML = '';
 
@@ -58,11 +58,11 @@
 
             if (path !== '/pdfs/') {
                 const parentPath = path.split('/').slice(0, -2).join('/') + '/';
-                gallery.innerHTML += `<button class="back-button" onclick="renderDirectory('${parentPath}')">Back</button>`;
+                gallery.innerHTML += `<button class="back-button" onclick="renderGallery('${parentPath}')">Back</button>`;
             }
 
             directories.forEach(dir => {
-                gallery.innerHTML += `<div class="directory"><a href="javascript:void(0)" onclick="renderDirectory('${path + dir + '/'}')">${dir}</a></div>`;
+                gallery.innerHTML += `<div class="directory"><a href="javascript:void(0)" onclick="renderGallery('${path + dir + '/'}')">${dir}</a></div>`;
             });
 
             currentDir.filter(pdf => pdf.replace(path, '').split('/').length === 1).forEach(pdf => {

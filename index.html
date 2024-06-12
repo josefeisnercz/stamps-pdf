@@ -39,7 +39,7 @@
             .then(response => response.json())
             .then(data => {
                 pdfs = data;
-                renderGallery('/stamps-pdf/pdfs/');
+                renderGallery('/pdfs/');
             })
             .catch(error => console.error('Error loading PDF list:', error));
 
@@ -56,7 +56,7 @@
             }).filter(dir => dir !== null))];
             console.log('Directories:', directories);
 
-            if (path !== '/pdfs/') {
+            if (path !== '/stamps-pdf/pdfs/') {
                 const parentPath = path.split('/').slice(0, -2).join('/') + '/';
                 gallery.innerHTML += `<button class="back-button" onclick="renderGallery('${parentPath}')">Back</button>`;
             }

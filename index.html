@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .directory, .pdf-item {
+            margin: 10px 0;
+        }
+        .directory a, .pdf-item a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .back-button {
+            margin: 10px 0;
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>PDF Gallery</h1>
+    <div id="gallery"></div>
+
+    <script>
+        let pdfs = [];
+        fetch('pdfs.json')
+            .then(response => response.json())
+            .then(data => {
+                pdfs = data;
+                renderDirectory('/pdfs/');
+            })
+            .catch(error => console.error('Error loading PDF list:', error));
+
+        function renderDirectory(path) {
+            const gallery = document.getElementById('gallery');
+            gallery.innerHTML = '';
+
+            const currentDir = pdfs.filter(pdf => pdf.startsWith(path));
+            console.log('Current Directory:', currentDir);
+
+            const directories = [...new Set(currentDir.map(pdf => {
+                const relativePath = pdf.replace(path, '').split('/');
+                return relativePath.length > 1 ? relativePath[0] : null;
+            }).filter(dir => dir !== null))];
+            console.log('Directories:', directories);
+
+            if (path !== '/pdfs/') {
+                const parentPath = path.split('/').slice(0, -2).join('/') + '/';
+                gallery.innerHTML += `<button class="back-button" onclick="renderDirectory('${parentPath}')">Back</button>`;
+            }
+
+            directories.forEach(dir => {
+                gallery.innerHTML += `<div class="directory"><a href="javascript:void(0)" onclick="renderDirectory('${path + dir + '/'}')">${dir}</a></div>`;
+            });
+
+            currentDir.filter(pdf => pdf.replace(path, '').split('/').length === 1).forEach(pdf => {
+                gallery.innerHTML += `<div class="pdf-item"><a href="${pdf}" target="_blank">${pdf.split('/').pop()}</a></div>`;
+            });
+        }
+    </script>
+</body>
+</html>

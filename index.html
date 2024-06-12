@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Gallery</title>
+    <title>Joe's Stamps PDF Gallery</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -30,7 +30,7 @@
     </style>
 </head>
 <body>
-    <h1>PDF Gallery</h1>
+    <h1>Joe's Stamps PDF Gallery</h1>
     <div id="gallery"></div>
 
     <script>
@@ -56,7 +56,7 @@
             }).filter(dir => dir !== null))];
             console.log('Directories:', directories);
 
-            if (path !== '/stamps-pdf/pdfs/') {
+            if (path !== '/pdfs/') {
                 const parentPath = path.split('/').slice(0, -2).join('/') + '/';
                 gallery.innerHTML += `<button class="back-button" onclick="renderGallery('${parentPath}')">Back</button>`;
             }

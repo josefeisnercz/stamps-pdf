@@ -39,7 +39,7 @@
             .then(response => response.json())
             .then(data => {
                 pdfs = data;
-                renderGallery('/stamps-pdf/pdfs/');
+                renderGallery('/pdfs/');
             })
             .catch(error => console.error('Error loading PDF list:', error));
 
